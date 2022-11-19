@@ -9,6 +9,9 @@ class LoginPage extends StatelessWidget{
         title: Text("App Invoice"),
       ),
       body: Container(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+        ),
       ),
     );
   }

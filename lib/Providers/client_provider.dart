@@ -12,8 +12,9 @@ class ClientProvider {
       String body = utf8.decode(resp.bodyBytes);
       final decodedData = jsonDecode(body);                      //se encarga de tomar el body en String y convertirlo a un json
       final client = Client.fromJsonList(decodedData);
-      print("los clientes ${client}");
+      print("los clientes $client");
       return client.items;
+      
 
     }else{
       throw Exception("Ocurrió algo  ${resp.statusCode}");

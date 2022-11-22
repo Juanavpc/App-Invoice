@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:app_invoice/Providers/client_provider.dart';
 import 'package:app_invoice/Models/model_client.dart';
@@ -53,12 +54,39 @@ class _LoginPageState extends State<LoginPage> {
                   SizedBox(height: 40),
                   _botonLogin(),
                   SizedBox(height: 20),
-                  /*Text("¿You don't have an account?",
+                  Text("OR",
                       style: TextStyle(
-                        fontSize: 13.8,
-                        fontFamily: "Roboto",
-                        color: Color.fromARGB(255, 110, 110, 110),
-                      )),*/
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                          color: Color.fromARGB(255, 77, 77, 77))),
+                  SizedBox(height: 10),
+                  Align(
+                      alignment: Alignment.center,
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 10),
+                        child: RichText(
+                            text: TextSpan(
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Color.fromARGB(255, 77, 77, 77),
+                          ),
+                          children: [
+                            TextSpan(text: "Don't have an account? "),
+                            TextSpan(
+                              text: "Sign up",
+                              style: TextStyle(
+                                color: Color.fromARGB(255, 201, 185, 231),
+                                fontWeight: FontWeight.bold,
+                                decoration: TextDecoration.underline,
+                              ),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  Navigator.pushNamed(context, '/register');
+                                },
+                            ),
+                          ],
+                        )),
+                      ))
                 ],
               ),
             ),
@@ -79,7 +107,8 @@ Widget _UsernameField() {
       controller: _usernameController,
       keyboardType: TextInputType.emailAddress,
       decoration: InputDecoration(
-        icon: Icon(Icons.person, color: Color.fromARGB(255, 201, 185, 231), size: 30),
+        icon: Icon(Icons.person,
+            color: Color.fromARGB(255, 201, 185, 231), size: 30),
         hintText: "Username",
         labelText: "Username",
         border: OutlineInputBorder(
@@ -101,7 +130,8 @@ Widget _PasswordField() {
       keyboardType: TextInputType.emailAddress,
       obscureText: true,
       decoration: InputDecoration(
-        icon: Icon(Icons.lock, color: Color.fromARGB(255, 201, 185, 231), size: 30),
+        icon: Icon(Icons.lock,
+            color: Color.fromARGB(255, 201, 185, 231), size: 30),
         hintText: "Password",
         labelText: "Password",
         border: OutlineInputBorder(

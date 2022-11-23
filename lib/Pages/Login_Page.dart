@@ -1,8 +1,8 @@
+import 'package:app_invoice/Pages/Home_Page.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:app_invoice/Providers/client_provider.dart';
-import 'package:app_invoice/Models/model_client.dart';
-import 'package:http/http.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -12,16 +12,36 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final clientprovider = ClientProvider();
+
+  TextEditingController _usernameController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+
 
   @override
   void initState() {
     super.initState();
-    final getProviderClient = ClientProvider();
+    checkLogin();
+
+
+  }
+  void checkLogin() async{
+    //aqui se verifica si el usuario ya esta logueado
+    SharedPreferences pref= await SharedPreferences.getInstance();
+    String? val= await pref.getString("login");
+    if (val!=null){
+      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context)=>HomePage()), (route) => false);
+
+    }
+  }
+
+  @override
+  void dispose(){
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 228, 228, 228),
       body: Center(
@@ -48,11 +68,77 @@ class _LoginPageState extends State<LoginPage> {
                     //textAlign: TextAlign.justify,
                   ),
                   SizedBox(height: 55),
-                  _UsernameField(),
+
+                  Padding(
+                    padding: const EdgeInsets.only(right: 30, left: 20),
+                    child: TextFormField(
+                      controller: _usernameController,
+                      keyboardType: TextInputType.name,
+                      decoration: InputDecoration(
+                        icon: Icon(Icons.person,
+                            color: Color.fromARGB(255, 201, 185, 231), size: 30),
+                        hintText: "Username",
+                        labelText: "Username",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          borderSide: BorderSide(
+                            color: Color.fromARGB(255, 201, 185, 231),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+
+
                   SizedBox(height: 15),
-                  _PasswordField(),
+
+                  Padding(
+                    padding: const EdgeInsets.only(right: 30, left: 20),
+                    child: TextFormField(
+                      controller: _passwordController,
+                      keyboardType: TextInputType.visiblePassword,
+                      obscureText: true,
+                      decoration: InputDecoration(
+                        icon: Icon(Icons.lock,
+                            color: Color.fromARGB(255, 201, 185, 231), size: 30),
+                        hintText: "Password",
+                        labelText: "Password",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          borderSide: BorderSide(
+                            color: Color.fromARGB(255, 201, 185, 231),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+
+
                   SizedBox(height: 40),
-                  _botonLogin(),
+
+
+                  ElevatedButton(
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 80, vertical: 15),
+                      child: Text(
+                        "Login",
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color.fromARGB(255, 165, 137, 218),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                      elevation: 8,
+                      textStyle: TextStyle(color: Colors.white),
+                    ),
+                    onPressed: () {
+                      login();
+                      //ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('${_usernameController.text} y ${_passwordController.text}')));
+                      //                     
+                      },
+                  ),
+
+
                   SizedBox(height: 20),
                   Text("OR",
                       style: TextStyle(
@@ -95,71 +181,43 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+
+
+void login() async{
+    var status=false;
+    final getprovider= ClientProvider();
+    var data=await getprovider.getClients();
+    if(_usernameController.text.isNotEmpty && _passwordController.text.isNotEmpty){
+      data.map((elem){
+        if(_usernameController.text==elem.username && _passwordController.text==elem.password){
+          status=true;
+          return pageRoute(elem.username);
+        }
+      }).toList();
+      if (status == false){
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Invalid Credentials")));
+      }
+    }else{
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Blank Value Found")));
+    }
+
 }
 
-TextEditingController _usernameController = TextEditingController();
-TextEditingController _passwordController = TextEditingController();
+void pageRoute(String user) async{
+  SharedPreferences pref= await SharedPreferences.getInstance();
+  await pref.setString("login", user);
+  Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context)=>HomePage()), (route) => false);
 
-Widget _UsernameField() {
-  return Padding(
-    padding: const EdgeInsets.only(right: 30, left: 20),
-    child: TextFormField(
-      controller: _usernameController,
-      keyboardType: TextInputType.emailAddress,
-      decoration: InputDecoration(
-        icon: Icon(Icons.person,
-            color: Color.fromARGB(255, 201, 185, 231), size: 30),
-        hintText: "Username",
-        labelText: "Username",
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20),
-          borderSide: BorderSide(
-            color: Color.fromARGB(255, 201, 185, 231),
-          ),
-        ),
-      ),
-    ),
-  );
 }
 
-Widget _PasswordField() {
-  return Padding(
-    padding: const EdgeInsets.only(right: 30, left: 20),
-    child: TextFormField(
-      controller: _passwordController,
-      keyboardType: TextInputType.emailAddress,
-      obscureText: true,
-      decoration: InputDecoration(
-        icon: Icon(Icons.lock,
-            color: Color.fromARGB(255, 201, 185, 231), size: 30),
-        hintText: "Password",
-        labelText: "Password",
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20),
-          borderSide: BorderSide(
-            color: Color.fromARGB(255, 201, 185, 231),
-          ),
-        ),
-      ),
-    ),
-  );
 }
 
-Widget _botonLogin() {
-  return ElevatedButton(
-    child: Container(
-      padding: EdgeInsets.symmetric(horizontal: 80, vertical: 15),
-      child: Text(
-        "Login",
-        style: TextStyle(fontSize: 16),
-      ),
-    ),
-    style: ElevatedButton.styleFrom(
-      backgroundColor: Color.fromARGB(255, 165, 137, 218),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      elevation: 8,
-      textStyle: TextStyle(color: Colors.white),
-    ),
-    onPressed: () {},
-  );
-}
+
+
+
+
+
+
+
+
+

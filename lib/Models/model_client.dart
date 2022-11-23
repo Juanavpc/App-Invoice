@@ -6,7 +6,7 @@ class Client{
   Client.fromJsonList(List<dynamic> jsonList){
     if(jsonList == null) return;
     for(var item in jsonList){
-      final cliente = new ModeloCliente.fromJsonMap(item);
+      final cliente = ModeloCliente.fromJsonMap(item);
       items.add(cliente);
     }
   }
@@ -14,25 +14,49 @@ class Client{
 
 class ModeloCliente{
   late int id;
-  late String name;
-  late String role;
-  late String password;
   late String email;
+  late String username;
+  late String password;
+  late String firstname;
+  late String lastname;
+  late String city;
+  late String street;
+  late int number;
+  late String zipcode;
+  late String lat;
+  late String long;
+  late String phone;
 
   ModeloCliente(
     this.id,
-    this.name,
-    this.role,
-    this.password,
     this.email,
+    this.username,
+    this.password,
+    this.firstname,
+    this.lastname,
+    this.city,
+    this.street,
+  this.number,
+    this.zipcode,
+    this.lat,
+    this.long,
+    this.phone
   );
 
   ModeloCliente.fromJsonMap(Map<String, dynamic> json){
-    id = json['Client_ID'];
-    name = json['Client_name'];
-    role = json['role'];
-    password = json['password'];
-    email = json['Email'];
+    id=json['id'];
+    email=json['email'];
+    username=json['username'];
+    password=json['password'];
+    firstname=json['name']['firstname'];
+    lastname=json['name']['lastname'];
+    city=json['address']['city'];
+    street=json['address']['street'];
+    zipcode=json['address']['zipcode'];
+    lat=json['address']['geolocation']['lat'];
+    long=json['address']['geolocation']['long'];
+    phone=json['phone'];
+    number=json['address']['number'];
   }
 
 }

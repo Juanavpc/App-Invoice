@@ -73,7 +73,7 @@ class _LoginPageState extends State<LoginPage> {
                     padding: const EdgeInsets.only(right: 30, left: 20),
                     child: TextFormField(
                       controller: _usernameController,
-                      keyboardType: TextInputType.name,
+                      keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
                         icon: Icon(Icons.person,
                             color: Color.fromARGB(255, 201, 185, 231), size: 30),
@@ -187,11 +187,12 @@ void login() async{
     var status=false;
     final getprovider= ClientProvider();
     var data=await getprovider.getClients();
+
     if(_usernameController.text.isNotEmpty && _passwordController.text.isNotEmpty){
       data.map((elem){
-        if(_usernameController.text==elem.username && _passwordController.text==elem.password){
+        if(_usernameController.text==elem.Email && _passwordController.text==elem.password){
           status=true;
-          return pageRoute(elem.username);
+          return pageRoute(elem.Email);
         }
       }).toList();
       if (status == false){

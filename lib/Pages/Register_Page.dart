@@ -1,5 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../Providers/client_provider.dart';
+import 'Home_Page.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -9,333 +13,220 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+
+  TextEditingController _usernameController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    checkLogin();
+
+
+  }
+  void checkLogin() async{
+    //aqui se verifica si el usuario ya esta logueado
+    SharedPreferences pref= await SharedPreferences.getInstance();
+    String? val= await pref.getString("login");
+    if (val!=null){
+      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context)=>HomePage()), (route) => false);
+
+    }
+  }
+
+  @override
+  void dispose(){
+    super.dispose();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 228, 228, 228),
-      body: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        margin: const EdgeInsets.all(20),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(padding: EdgeInsets.only(top: 10)),
-              Text(
-                "Create\nyour account",
-                style: TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: "Handlee",
+      body: Center(
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          margin: const EdgeInsets.all(20),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(padding: EdgeInsets.only(top: 10)),
+                Text(
+                  "Create\nyour account",
+                  style: TextStyle(
+                    fontSize: 32,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: "Handlee",
+                  ),
                 ),
-              ),
-              SizedBox(height: 20),
-              _FirstNameField(),
-              SizedBox(height: 15),
-              _LastNameField(),
-              SizedBox(height: 15),
-              _City(),
-              SizedBox(height: 15),
-              _Street(),
-              SizedBox(height: 15),
-              _HouseNumber(),
-              SizedBox(height: 15),
-              _Zipcode(),
-              SizedBox(height: 15),
-              _Lat(),
-              SizedBox(height: 15),
-              _Long(),
-              SizedBox(height: 15),
-              _PhoneNumber(),
-              SizedBox(height: 15),
-              _UsernameField(),
-              SizedBox(height: 15),
-              _EmailField(),
-              SizedBox(height: 15),
-              _PasswordField(),
-              SizedBox(height: 40),
-              _botonRegister(),
-              SizedBox(height: 15),
-            ],
+
+                SizedBox(height: 15),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 30, left: 20),
+                    child: TextFormField(
+                      controller: _usernameController,
+                      keyboardType: TextInputType.name,
+                      decoration: InputDecoration(
+                        hintText: "Username",
+                        labelText: "Username",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          borderSide: BorderSide(
+                            color: Color.fromARGB(255, 201, 185, 231),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                SizedBox(height: 15),
+
+
+                Padding(
+                  padding: const EdgeInsets.only(right: 30, left: 20),
+                  child: TextFormField(
+                    controller: _emailController,
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: InputDecoration(
+                      hintText: "Email",
+                      labelText: "Email",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide(
+                          color: Color.fromARGB(255, 201, 185, 231),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+
+
+                SizedBox(height: 15),
+
+
+                Padding(
+                  padding: const EdgeInsets.only(right: 30, left: 20),
+                  child: TextFormField(
+                    controller: _passwordController,
+                    keyboardType: TextInputType.visiblePassword,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      hintText: "Password",
+                      labelText: "Password",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide(
+                          color: Color.fromARGB(255, 201, 185, 231),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+
+
+                SizedBox(height: 40),
+                ElevatedButton(
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 80, vertical: 15),
+                    child: Text(
+                      "Register",
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color.fromARGB(255, 165, 137, 218),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                    elevation: 8,
+                    textStyle: TextStyle(color: Colors.white),
+                  ),
+                  onPressed: () {
+                    register();
+                  },
+                ),
+                SizedBox(height: 15),
+                Align(
+                    alignment: Alignment.center,
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 10),
+                      child: RichText(
+                          text: TextSpan(
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Color.fromARGB(255, 77, 77, 77),
+                            ),
+                            children: [
+                              TextSpan(text: "Already have an account? "),
+                              TextSpan(
+                                text: "Login",
+                                style: TextStyle(
+                                  color: Color.fromARGB(255, 201, 185, 231),
+                                  fontWeight: FontWeight.bold,
+                                  decoration: TextDecoration.underline,
+                                ),
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () {
+                                    Navigator.pushNamed(context, '/');
+                                  },
+                              ),
+                            ],
+                          )),
+                    )),
+                SizedBox(height: 15),
+              ],
+            ),
           ),
         ),
-      ),
+      )
     );
+  }
+  void register() async{
+    var status=false;
+    final getprovider= ClientProvider();
+    var data=await getprovider.getClients();
+
+
+
+
+    if(_usernameController.text.isNotEmpty && _passwordController.text.isNotEmpty && _emailController.text.isNotEmpty){
+      data.map((elem){
+        if(_emailController.text==elem.Email){
+          status=true;
+        }
+      }).toList();
+      if (status==false){
+        await getprovider.addClients(_usernameController.text,_passwordController.text,_emailController.text);
+        pageRoute(_emailController.text);
+
+      }else{
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Ya existe")));
+      }
+
+    }else{
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Blank Value Found")));
+    }
+
+  }
+
+  void pageRoute(String user) async{
+    SharedPreferences pref= await SharedPreferences.getInstance();
+    await pref.setString("login", user);
+    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context)=>HomePage()), (route) => false);
+
   }
 }
 
-TextEditingController _firstnameController = TextEditingController();
-TextEditingController _lastnameController = TextEditingController();
-TextEditingController _cityController = TextEditingController();
-TextEditingController _streetController = TextEditingController();
-TextEditingController _housenumberController = TextEditingController();
-TextEditingController _zipcodeController = TextEditingController();
-TextEditingController _latController = TextEditingController();
-TextEditingController _longController = TextEditingController();
-TextEditingController _phonenumberController = TextEditingController();
-TextEditingController _usernameController = TextEditingController();
-TextEditingController _emailController = TextEditingController();
-TextEditingController _passwordController = TextEditingController();
 
-Widget _FirstNameField() {
-  return Padding(
-    padding: const EdgeInsets.only(right: 30, left: 20),
-    child: TextFormField(
-      controller: _firstnameController,
-      keyboardType: TextInputType.name,
-      decoration: InputDecoration(
-        hintText: "FirstName",
-        labelText: "FirstName",
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20),
-          borderSide: BorderSide(
-            color: Color.fromARGB(255, 201, 185, 231),
-          ),
-        ),
-      ),
-    ),
-  );
-}
 
-Widget _LastNameField() {
-  return Padding(
-    padding: const EdgeInsets.only(right: 30, left: 20),
-    child: TextFormField(
-      controller: _lastnameController,
-      keyboardType: TextInputType.name,
-      decoration: InputDecoration(
-        hintText: "LastName",
-        labelText: "LastName",
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20),
-          borderSide: BorderSide(
-            color: Color.fromARGB(255, 201, 185, 231),
-          ),
-        ),
-      ),
-    ),
-  );
-}
 
-Widget _City() {
-  return Padding(
-    padding: const EdgeInsets.only(right: 30, left: 20),
-    child: TextFormField(
-      controller: _cityController,
-      keyboardType: TextInputType.text,
-      decoration: InputDecoration(
-        hintText: "City",
-        labelText: "City",
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20),
-          borderSide: BorderSide(
-            color: Color.fromARGB(255, 201, 185, 231),
-          ),
-        ),
-      ),
-    ),
-  );
-}
 
-Widget _Street() {
-  return Padding(
-    padding: const EdgeInsets.only(right: 30, left: 20),
-    child: TextFormField(
-      controller: _streetController,
-      keyboardType: TextInputType.streetAddress,
-      decoration: InputDecoration(
-        hintText: "Street",
-        labelText: "Street",
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20),
-          borderSide: BorderSide(
-            color: Color.fromARGB(255, 201, 185, 231),
-          ),
-        ),
-      ),
-    ),
-  );
-}
 
-Widget _HouseNumber() {
-  return Padding(
-    padding: const EdgeInsets.only(right: 30, left: 20),
-    child: TextFormField(
-      controller: _housenumberController,
-      keyboardType: TextInputType.number,
-      decoration: InputDecoration(
-        hintText: "House Number",
-        labelText: "House Number",
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20),
-          borderSide: BorderSide(
-            color: Color.fromARGB(255, 201, 185, 231),
-          ),
-        ),
-      ),
-    ),
-  );
-}
 
-Widget _Zipcode() {
-  return Padding(
-    padding: const EdgeInsets.only(right: 30, left: 20),
-    child: TextFormField(
-      controller: _zipcodeController,
-      keyboardType: TextInputType.number,
-      decoration: InputDecoration(
-        hintText: "Zipcode",
-        labelText: "Zipcode",
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20),
-          borderSide: BorderSide(
-            color: Color.fromARGB(255, 201, 185, 231),
-          ),
-        ),
-      ),
-    ),
-  );
-}
 
-Widget _Lat() {
-  return Padding(
-    padding: const EdgeInsets.only(right: 30, left: 20),
-    child: TextFormField(
-      controller: _latController,
-      keyboardType: TextInputType.number,
-      decoration: InputDecoration(
-        hintText: "Latitude",
-        labelText: "Latitude",
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20),
-          borderSide: BorderSide(
-            color: Color.fromARGB(255, 201, 185, 231),
-          ),
-        ),
-      ),
-    ),
-  );
-}
 
-Widget _Long() {
-  return Padding(
-    padding: const EdgeInsets.only(right: 30, left: 20),
-    child: TextFormField(
-      controller: _longController,
-      keyboardType: TextInputType.number,
-      decoration: InputDecoration(
-        hintText: "Longitude",
-        labelText: "Longitude",
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20),
-          borderSide: BorderSide(
-            color: Color.fromARGB(255, 201, 185, 231),
-          ),
-        ),
-      ),
-    ),
-  );
-}
 
-Widget _PhoneNumber() {
-  return Padding(
-    padding: const EdgeInsets.only(right: 30, left: 20),
-    child: TextFormField(
-      controller: _phonenumberController,
-      keyboardType: TextInputType.phone,
-      decoration: InputDecoration(
-        hintText: "Phone",
-        labelText: "Phone",
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20),
-          borderSide: BorderSide(
-            color: Color.fromARGB(255, 201, 185, 231),
-          ),
-        ),
-      ),
-    ),
-  );
-}
 
-Widget _UsernameField() {
-  return Padding(
-    padding: const EdgeInsets.only(right: 30, left: 20),
-    child: TextFormField(
-      controller: _usernameController,
-      keyboardType: TextInputType.name,
-      decoration: InputDecoration(
-        hintText: "Username",
-        labelText: "Username",
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20),
-          borderSide: BorderSide(
-            color: Color.fromARGB(255, 201, 185, 231),
-          ),
-        ),
-      ),
-    ),
-  );
-}
-
-Widget _EmailField() {
-  return Padding(
-    padding: const EdgeInsets.only(right: 30, left: 20),
-    child: TextFormField(
-      controller: _emailController,
-      keyboardType: TextInputType.emailAddress,
-      decoration: InputDecoration(
-        hintText: "Email",
-        labelText: "Email",
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20),
-          borderSide: BorderSide(
-            color: Color.fromARGB(255, 201, 185, 231),
-          ),
-        ),
-      ),
-    ),
-  );
-}
-
-Widget _PasswordField() {
-  return Padding(
-    padding: const EdgeInsets.only(right: 30, left: 20),
-    child: TextFormField(
-      controller: _passwordController,
-      keyboardType: TextInputType.visiblePassword,
-      obscureText: true,
-      decoration: InputDecoration(
-        hintText: "Password",
-        labelText: "Password",
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20),
-          borderSide: BorderSide(
-            color: Color.fromARGB(255, 201, 185, 231),
-          ),
-        ),
-      ),
-    ),
-  );
-}
-
-Widget _botonRegister() {
-  return ElevatedButton(
-    child: Container(
-      padding: EdgeInsets.symmetric(horizontal: 80, vertical: 15),
-      child: Text(
-        "Register",
-        style: TextStyle(fontSize: 16),
-      ),
-    ),
-    style: ElevatedButton.styleFrom(
-      backgroundColor: Color.fromARGB(255, 165, 137, 218),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      elevation: 8,
-      textStyle: TextStyle(color: Colors.white),
-    ),
-    onPressed: () {},
-  );
-}

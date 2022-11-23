@@ -13,50 +13,37 @@ class Client{
 }
 
 class ModeloCliente{
-  late int id;
-  late String email;
-  late String username;
+  late int Client_ID;
+  late String Client_name;
+  late String role;
   late String password;
-  late String firstname;
-  late String lastname;
-  late String city;
-  late String street;
-  late int number;
-  late String zipcode;
-  late String lat;
-  late String long;
-  late String phone;
+  late String Email;
+
+
+
+
 
   ModeloCliente(
-    this.id,
-    this.email,
-    this.username,
+    this.Client_ID,
+    this.Client_name,
+    this.role,
     this.password,
-    this.firstname,
-    this.lastname,
-    this.city,
-    this.street,
-  this.number,
-    this.zipcode,
-    this.lat,
-    this.long,
-    this.phone
+    this.Email
+
+
+
+
   );
 
   ModeloCliente.fromJsonMap(Map<String, dynamic> json){
-    id=json['id'];
-    email=json['email'];
-    username=json['username'];
+    Client_ID=json['Client_ID'];
+    Client_name=json['Client_name'];
+    role=json['role'];
     password=json['password'];
-    firstname=json['name']['firstname'];
-    lastname=json['name']['lastname'];
-    city=json['address']['city'];
-    street=json['address']['street'];
-    zipcode=json['address']['zipcode'];
-    lat=json['address']['geolocation']['lat'];
-    long=json['address']['geolocation']['long'];
-    phone=json['phone'];
-    number=json['address']['number'];
+    Email=json['Email'];
+
+
+
   }
 
 }

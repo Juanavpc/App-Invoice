@@ -20,6 +20,7 @@ class MyApp extends StatelessWidget {
         '/register':(context) => RegisterPage(),
         '/home':(context) => HomePage()
       },
+    
     );
   }
 }

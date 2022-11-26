@@ -1,7 +1,10 @@
 import 'dart:js_util';
 import 'package:app_invoice/Pages/Login_Page.dart';
+import 'package:app_invoice/Providers/product_provider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../Widgets/ContentProduct.dart';
 import '../Widgets/DiscountCard.dart';
 import '../Widgets/SearchField.dart';
 
@@ -15,7 +18,8 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _selectIndex = 0;
   String user = "";
-
+  List catList=["All","Electronicos", "Hogar","Joyeria", "Ropa"];
+  final productProvider = ProductProvider();
   @override
   void initState() {
     // TODO: implement initState
@@ -38,121 +42,122 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    productProvider.getProducts();
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 228, 228, 228),
-      body: Column(
-        children: [
-          Container(
-            width: double.infinity,
-            height: 50,
-            color: Colors.white,
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      SearchField(),
-                      Spacer(),
-                      InkWell(
-                        onTap: () {},
-                        borderRadius: BorderRadius.circular(50),
-                        child: Stack(
-                          children: [
-                            Container(
-                              width: 30,
-                              height: 30,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Color.fromARGB(255, 238, 238, 238),
-                              ),
-                              child: Icon(Icons.shopping_cart),
+      backgroundColor: Colors.grey,
+     body: SingleChildScrollView(
+       child: SafeArea(
+         child: Padding(
+           padding: EdgeInsets.only(top:20,left: 15),
+           child: Column(
+             children: [
+               Padding(
+                   padding: EdgeInsets.only(right: 25),
+                 child: Row(
+                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                   children: [
+                     Container(
+                       width: MediaQuery.of(context).size.width/1.5,
+                       decoration: BoxDecoration(
+                         color:Color(0xFFF7F8Fa),
+                         borderRadius: BorderRadius.circular(10),
+                       ),
+                       child: TextFormField(
+                         decoration: InputDecoration(
+                           label: Text("Find your product"),
+                           border: InputBorder.none,
+                           prefixIcon:  Icon(
+                             Icons.search,
+                             size: 30,
+                             color: Colors.grey,
+                           )
+                         ),
+                       ),
+                     ),
+                     Container(
+                       padding: EdgeInsets.all(15),
+                       decoration: BoxDecoration(
+                         color: Color(0xFFF7F8FA),
+                         borderRadius: BorderRadius.circular(10),
+
+                       ),
+                       child: Icon(
+                         Icons.notifications_none,
+                         size: 30,
+                         color:Colors.grey
+                       ),
+                     )
+                   ],
+                 ),
+
+               ),
+               Container(
+                 margin: EdgeInsets.only(right: 25,top:20),
+                 alignment:Alignment.center,
+                 child: ClipRRect(
+                   borderRadius: BorderRadius.circular(30),
+                    child: Image.asset("cover.jpg",
+                    width: MediaQuery.of(context).size.width/1.2,
+                      fit: BoxFit.contain,
+                    ),
+                 ),
+               ),
+               SingleChildScrollView(
+                 scrollDirection: Axis.horizontal,
+                  child: Padding(
+                    padding: EdgeInsets.only(top:25),
+                    child: Row(
+                      children: [
+                        for(int i=0;i<catList.length;i++)
+                          Container(//deben de ser botones o selecciones que permitan ir a a otra pagina
+                            margin: EdgeInsets.all(8),
+                            padding: EdgeInsets.symmetric(
+                              vertical: 10,horizontal: 18
                             ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      InkWell(
-                        onTap: () {},
-                        borderRadius: BorderRadius.circular(50),
-                        child: Stack(
-                          children: [
-                            Container(
-                              width: 30,
-                              height: 30,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Color.fromARGB(255, 238, 238, 238),
-                              ),
-                              child: Icon(Icons.notifications),
+                            decoration: BoxDecoration(color:catList[i]=="All"?
+                            Color(0xFFFD725A):
+                                Color(0xFFF7F8FA),
+                              borderRadius: BorderRadius.circular(18)
                             ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      InkWell(
-                        onTap: () async {
-                          SharedPreferences pref =
-                              await SharedPreferences.getInstance();
-                          await pref.clear();
-                          Navigator.of(context).pushAndRemoveUntil(
-                              MaterialPageRoute(
-                                  builder: (context) => LoginPage()),
-                              (route) => false);
-                        },
-                        borderRadius: BorderRadius.circular(50),
-                        child: Stack(
-                          children: [
-                            Container(
-                              width: 30,
-                              height: 30,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Color.fromARGB(255, 238, 238, 238),
-                              ),
-                              child: Icon(Icons.logout),
+                            child: Text(catList[i],
+                            style: TextStyle(fontSize: 16,
+                              color:catList[i]=="All"?
+                              Colors.white:
+                              Colors.grey,),
                             ),
-                          ],
-                        ),
-                      ),
-                    ],
+                          )
+
+                      ],
+                    ),
                   ),
-                )
-              ],
-            ),
-          ),
-          SizedBox(height: 15),
-          DiscountBanner(),
-        ],
-      ),
+               ),
+               ContentStreamProducts(productProvider)
+             ],
+           ),
+         ),
+       ),
+     ),
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.white,
+        iconSize: 30,
+        selectedItemColor: Color(0xFFFD725A),
+        unselectedItemColor: Colors.grey ,
+        currentIndex: 0,
+        onTap: (index){},
+        type: BottomNavigationBarType.fixed,
         items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: "Home",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
-            label: "Favorite",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_bag),
-            label: "Bag",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: "Profile",
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.home),label: ''),
+          BottomNavigationBarItem(icon: Icon(CupertinoIcons.cart_fill),label: ''),
+          BottomNavigationBarItem(icon: Icon(Icons.favorite),label: ''),
+          BottomNavigationBarItem(icon: Icon(Icons.person),label: ''),
         ],
-        currentIndex: _selectIndex,
-        selectedItemColor: Color.fromARGB(255, 201, 185, 231),
-        unselectedItemColor: Colors.grey,
-        onTap: onTapped,
       ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Color(0xFFFD725A),
+        onPressed: (){},
+      ),
+      floatingActionButtonLocation:
+      FloatingActionButtonLocation.miniCenterDocked,
     );
   }
 }

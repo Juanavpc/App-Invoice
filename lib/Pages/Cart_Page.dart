@@ -2,7 +2,9 @@ import 'package:app_invoice/Widgets/Cart_Items.dart';
 import 'package:flutter/material.dart';
 
 class CartPage extends StatelessWidget {
-  const CartPage({super.key});
+
+  List items;
+  CartPage(this.items);
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +49,7 @@ class CartPage extends StatelessWidget {
                 padding: EdgeInsets.only(top: 15),
                 child: Column(
                   children: [
-                    CartItems("ss", 222, "sss", "sss"),
+                    CartItems(items),
                     SizedBox(
                       height: 50,
                     ),

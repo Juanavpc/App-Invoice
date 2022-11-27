@@ -1,12 +1,52 @@
+import 'dart:async';
+
 import 'package:app_invoice/Pages/Cart_Page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class CustomBottomSheet extends StatelessWidget {
-
+class CustomBottomSheet extends StatefulWidget {
+  int id;
+  String name;
   int price;
+  String img;
+  String desc;
 
-  CustomBottomSheet(this.price);
+  CustomBottomSheet(this.id, this.name, this.price, this.img, this.desc);
+
+  @override
+  _CustomBottomSheet createState()=>_CustomBottomSheet(id,name,price,img,desc);
+
+
+}
+class _CustomBottomSheet extends State<CustomBottomSheet>{
+
+  int id;
+  String name;
+  int price;
+  String img;
+  String desc;
+  Map product={};
+  List items=[];
+  Map productwithcounter={};
+
+  _CustomBottomSheet(this.id, this.name, this.price, this.img, this.desc);
+  int counter=1;
+  int number=1;
+  int total= 0;
+  final StreamController<int> streamController=new StreamController<int>();
+  final StreamController<List> itemsController=new StreamController<List>();
+  @override
+  void initState() {
+    super.initState();
+    total=price;
+
+  }
+
+  @override void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    streamController.close();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,39 +82,80 @@ class CustomBottomSheet extends StatelessWidget {
                 ),
               ),
               SizedBox(width: 30),
-              Container(
-                padding: EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: Color(0xFFF7F8FA),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Icon(
-                  CupertinoIcons.minus,
-                  size: 18,
-                  color: Colors.redAccent,
+
+              InkWell(
+                onTap: () {
+                  streamController.sink.add(--counter);
+                  setState(() {
+                    if (counter==0){
+                      total= price * 1;
+                      }else{
+                      total= price * counter;
+                    }
+
+                  });
+                },
+                child:Container(
+                  padding: EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Color(0xFFF7F8FA),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Icon(
+                    CupertinoIcons.minus,
+                    size: 18,
+                    color: Colors.redAccent,
+
+                  ),
+
                 ),
               ),
               SizedBox(width: 8,),
-              Text(
-                "01",
-                style: TextStyle(
-                  fontSize: 17,
-                  fontWeight: FontWeight.w400,
-                ),
+              StreamBuilder(
+                  initialData: 1,
+                stream: streamController.stream,
+                builder: (context,snapshot){
+                    if (snapshot.data! >= 1){
+                    number=snapshot.data!;
+                    }else{
+                      counter=1;
+                      number=1;
+                    }
+                    return Text(
+                      "${number}",
+                      style: TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    );
+                },
               ),
+
+
               SizedBox(width: 8,),
-              Container(
-                padding: EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: Color(0xFFF7F8FA),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Icon(
-                  CupertinoIcons.add,
-                  size: 18,
-                  color: Colors.redAccent,
+
+              InkWell(
+                onTap: () {
+                  streamController.sink.add(++counter);
+                  setState(() {
+                    total= price * counter;
+                  });
+                },
+                child: Container(
+                  padding: EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Color(0xFFF7F8FA),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Icon(
+                    CupertinoIcons.add,
+                    size: 18,
+                    color: Colors.redAccent,
+                  ),
                 ),
               ),
+              
+
             ],
           ),
           SizedBox(height: 40),
@@ -89,7 +170,8 @@ class CustomBottomSheet extends StatelessWidget {
                 ),
               ),
               Text(
-                "\$${price}.000",
+
+                "\$${total}.000",
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w600,
@@ -101,8 +183,28 @@ class CustomBottomSheet extends StatelessWidget {
           SizedBox(height: 30),
           InkWell(
             onTap: (){
+              product={
+                  'Product_ID':id,
+                  'Product_name':name,
+                  'Product_descr':desc,
+                  'Price':price,
+                  'image':img
+                };
+                productwithcounter={
+                  'product':product,
+                  'quantity':counter
+                };
+                product.addAll(product);
+                productwithcounter.addAll(productwithcounter);
+                items.add(productwithcounter);
+
+
+
+
+
+
               Navigator.push(context, MaterialPageRoute(
-                builder: (context) => CartPage(),
+                builder: (context) => CartPage(items),
               ));
             },
             child: Container(
@@ -125,4 +227,6 @@ class CustomBottomSheet extends StatelessWidget {
       ),
     );
   }
+
+
 }

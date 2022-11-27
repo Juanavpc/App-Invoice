@@ -150,7 +150,7 @@ class ProductDetails extends StatelessWidget {
                               backgroundColor: Colors.transparent,
                               context: context,
                               builder: (context) {
-                                return CustomBottomSheet(price);
+                                return CustomBottomSheet(id, name, price, img, desc);
                               });
                         },
                         child: Container(

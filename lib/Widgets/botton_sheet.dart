@@ -9,11 +9,12 @@ class CustomBottomSheet extends StatefulWidget {
   int price;
   String img;
   String desc;
+  List listProductCart;
 
-  CustomBottomSheet(this.id, this.name, this.price, this.img, this.desc);
+  CustomBottomSheet(this.id, this.name, this.price, this.img, this.desc, this.listProductCart);
 
   @override
-  _CustomBottomSheet createState()=>_CustomBottomSheet(id,name,price,img,desc);
+  _CustomBottomSheet createState()=>_CustomBottomSheet(id,name,price,img,desc,listProductCart);
 }
 
 class _CustomBottomSheet extends State<CustomBottomSheet>{
@@ -23,11 +24,12 @@ class _CustomBottomSheet extends State<CustomBottomSheet>{
   int price;
   String img;
   String desc;
+  List listProductCart;
   Map product={};
   List items=[];
   Map productwithcounter={};
 
-  _CustomBottomSheet(this.id, this.name, this.price, this.img, this.desc);
+  _CustomBottomSheet(this.id, this.name, this.price, this.img, this.desc, this.listProductCart);
   int counter=1;
   int number=1;
   int total= 0;
@@ -40,10 +42,17 @@ class _CustomBottomSheet extends State<CustomBottomSheet>{
 
   }
 
-  @override void dispose() {
+  @override 
+  void dispose() {
     // TODO: implement dispose
     super.dispose();
     streamController.close();
+  }
+
+  void addProductCart(Map product){
+    setState(() {
+      listProductCart.add(product);
+    });
   }
 
   @override
@@ -181,7 +190,7 @@ class _CustomBottomSheet extends State<CustomBottomSheet>{
           SizedBox(height: 30),
           InkWell(
             onTap: (){
-              product={
+                product={
                   'Product_ID':id,
                   'Product_name':name,
                   'Product_descr':desc,
@@ -196,6 +205,7 @@ class _CustomBottomSheet extends State<CustomBottomSheet>{
                 product.addAll(product);
                 productwithcounter.addAll(productwithcounter);
                 items.add(productwithcounter);
+                addProductCart(productwithcounter);
 
 
 
@@ -203,7 +213,7 @@ class _CustomBottomSheet extends State<CustomBottomSheet>{
 
 
               Navigator.push(context, MaterialPageRoute(
-                builder: (context) => CartPage(items),
+                builder: (context) => CartPage(listProductCart),
               ));
             },
             child: Container(
@@ -213,7 +223,7 @@ class _CustomBottomSheet extends State<CustomBottomSheet>{
                 borderRadius: BorderRadius.circular(30),
               ),
               child: Text(
-                "Checkout",
+                "Add to cart",
                 style: TextStyle(
                   fontSize: 17,
                   fontWeight: FontWeight.w600,

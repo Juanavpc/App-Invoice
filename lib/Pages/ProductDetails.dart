@@ -9,8 +9,9 @@ class ProductDetails extends StatelessWidget {
   int price;
   String img;
   String desc;
+  List listProductCart;
 
-  ProductDetails(this.id, this.name, this.price, this.img, this.desc);
+  ProductDetails(this.id, this.name, this.price, this.img, this.desc, this.listProductCart);
 
   @override
   Widget build(BuildContext context) {
@@ -150,7 +151,7 @@ class ProductDetails extends StatelessWidget {
                               backgroundColor: Colors.transparent,
                               context: context,
                               builder: (context) {
-                                return CustomBottomSheet(id, name, price, img, desc);
+                                return CustomBottomSheet(id, name, price, img, desc, listProductCart);
                               });
                         },
                         child: Container(

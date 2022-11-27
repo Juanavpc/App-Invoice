@@ -1,6 +1,8 @@
 import 'dart:js_util';
+import 'package:app_invoice/Pages/Cart_Page.dart';
 import 'package:app_invoice/Pages/Login_Page.dart';
 import 'package:app_invoice/Providers/product_provider.dart';
+import 'package:app_invoice/Widgets/Product_Card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -22,6 +24,7 @@ class _HomePageState extends State<HomePage> {
   List catList=["All","Electronicos", "Hogar","Joyeria", "Ropa"];
   final productProvider = ProductProvider();
   String _currentElection = "All";
+  List listProductCart = [];
 
   @override
   void initState() {
@@ -46,6 +49,12 @@ class _HomePageState extends State<HomePage> {
   void onElection(String value){
     setState(() {
       _currentElection = value;
+    });
+  }
+
+  void addProductCart(Map product){
+    setState(() {
+      listProductCart.add(product);
     });
   }
 
@@ -153,7 +162,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                ),
-               ContentStreamProducts(productProvider)
+               ContentStreamProducts(productProvider, listProductCart),
              ],
            ),
          ),
@@ -164,8 +173,16 @@ class _HomePageState extends State<HomePage> {
         iconSize: 30,
         selectedItemColor: Color(0xFFFD725A),
         unselectedItemColor: Colors.grey ,
-        currentIndex: 0,
-        onTap: (index){},
+        currentIndex: _selectIndex,
+        onTap: (int index){
+          if(index == 0){
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>HomePage()));
+          }else if(index == 1){
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>CartPage(listProductCart)));
+          }
+        },
+        //onTap: (index){
+        //},
         type: BottomNavigationBarType.fixed,
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home),label: ''),

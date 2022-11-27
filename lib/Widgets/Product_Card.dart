@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../Pages/ProductDetails.dart';
 
 class ProductCard extends StatelessWidget{
@@ -8,8 +7,12 @@ class ProductCard extends StatelessWidget{
   int price;
   String img;
   String desc;
+  
+  List listProductCart;
 
-  ProductCard(this.id,this.name,this.price,this.img,this.desc);
+  ProductCard(this.id,this.name,this.price,this.img,this.desc, this.listProductCart);
+
+
 
   @override
   Widget build(BuildContext context){
@@ -23,7 +26,7 @@ class ProductCard extends StatelessWidget{
               children: [
                 InkWell(
                   onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => ProductDetails(id,name,price,img,desc)));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ProductDetails(id,name,price,img,desc, listProductCart)));
                   },
                   child: Image.network(img, fit: BoxFit.cover,height: 230,),
                 ),
@@ -37,10 +40,11 @@ class ProductCard extends StatelessWidget{
                         color: Color(0xFFF7F8FA),
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      child: Icon(Icons.favorite,
-                        size: 20,
-                        color: Colors.red,
-
+                      child: IconButton(
+                        icon: Icon(Icons.favorite, color: Colors.red, size: 20,),
+                        onPressed: (){
+                        },
+                        
                       ),
                     ),
                   ),

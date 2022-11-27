@@ -12,7 +12,6 @@ class CartItems extends StatelessWidget {
     return Column(
 
       children: items.map((item) =>
-
           Container(
             height: 110,
             margin: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
@@ -56,7 +55,7 @@ class CartItems extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        "\$${item['product']['Price']}.000",
+                        "\$${item['total']}.000",
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -95,7 +94,7 @@ class CartItems extends StatelessWidget {
                               width: 8,
                             ),
                             Text(
-                              "01",
+                              "${item['quantity']}",
                               style: TextStyle(
                                 fontSize: 17,
                                 fontWeight: FontWeight.w400,

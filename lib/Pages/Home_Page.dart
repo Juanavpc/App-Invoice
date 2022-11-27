@@ -16,10 +16,13 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
   int _selectIndex = 0;
   String user = "";
   List catList=["All","Electronicos", "Hogar","Joyeria", "Ropa"];
   final productProvider = ProductProvider();
+  String _currentElection = "All";
+
   @override
   void initState() {
     // TODO: implement initState
@@ -40,9 +43,17 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  void onElection(String value){
+    setState(() {
+      _currentElection = value;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    productProvider.getProducts();
+    if(_currentElection == "All"){
+      productProvider.getProducts();
+    }
     return Scaffold(
       backgroundColor: Colors.grey,
      body: SingleChildScrollView(
@@ -109,24 +120,35 @@ class _HomePageState extends State<HomePage> {
                     child: Row(
                       children: [
                         for(int i=0;i<catList.length;i++)
-                          Container(//deben de ser botones o selecciones que permitan ir a a otra pagina
+                          Container(                                 //deben de ser botones o selecciones que permitan ir a a otra pagina
                             margin: EdgeInsets.all(8),
                             padding: EdgeInsets.symmetric(
                               vertical: 10,horizontal: 18
                             ),
-                            decoration: BoxDecoration(color:catList[i]=="All"?
+                            decoration: BoxDecoration(color:catList[i]==_currentElection?
                             Color(0xFFFD725A):
                                 Color(0xFFF7F8FA),
                               borderRadius: BorderRadius.circular(18)
                             ),
-                            child: Text(catList[i],
-                            style: TextStyle(fontSize: 16,
-                              color:catList[i]=="All"?
-                              Colors.white:
-                              Colors.grey,),
+                            child: TextButton(
+                              child: Text(
+                                catList[i],
+                                style: TextStyle(fontSize: 16,
+                               color:catList[i]==_currentElection?
+                               Colors.white:
+                               Colors.grey,),
+                              ),
+                              onPressed: () {
+                                if(catList[i]=="All"){
+                                  onElection("All");
+                                  productProvider.getProducts();
+                                }else{
+                                  onElection(catList[i]);
+                                  productProvider.getProductsByCategory(catList[i]);
+                                }
+                              },
                             ),
                           )
-
                       ],
                     ),
                   ),

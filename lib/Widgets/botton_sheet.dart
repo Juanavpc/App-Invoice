@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:app_invoice/Pages/Cart_Page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,9 +14,8 @@ class CustomBottomSheet extends StatefulWidget {
 
   @override
   _CustomBottomSheet createState()=>_CustomBottomSheet(id,name,price,img,desc);
-
-
 }
+
 class _CustomBottomSheet extends State<CustomBottomSheet>{
 
   int id;
@@ -192,7 +190,8 @@ class _CustomBottomSheet extends State<CustomBottomSheet>{
                 };
                 productwithcounter={
                   'product':product,
-                  'quantity':counter
+                  'quantity':counter,
+                  'total':price*counter
                 };
                 product.addAll(product);
                 productwithcounter.addAll(productwithcounter);

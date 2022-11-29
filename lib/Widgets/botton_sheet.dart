@@ -245,6 +245,4 @@ class _CustomBottomSheet extends State<CustomBottomSheet> {
       ),
     );
   }
-
-  void add(int value, int quantity) {}
 }

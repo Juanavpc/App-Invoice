@@ -70,14 +70,13 @@ class _RegisterPageState extends State<RegisterPage> {
                       keyboardType: TextInputType.name,
                       decoration: InputDecoration(
                         icon: Icon(Icons.person,
-                            color: Color.fromARGB(255, 201, 185, 231),
-                            size: 30),
+                            color: Colors.redAccent, size: 30),
                         hintText: "Username",
                         labelText: "Username",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(20),
                           borderSide: BorderSide(
-                            color: Color.fromARGB(255, 201, 185, 231),
+                            color: Colors.redAccent,
                           ),
                         ),
                       ),
@@ -91,14 +90,13 @@ class _RegisterPageState extends State<RegisterPage> {
                       keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
                         icon: Icon(Icons.email,
-                            color: Color.fromARGB(255, 201, 185, 231),
-                            size: 30),
+                            color: Colors.redAccent, size: 30),
                         hintText: "Email",
                         labelText: "Email",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(20),
                           borderSide: BorderSide(
-                            color: Color.fromARGB(255, 201, 185, 231),
+                            color: Colors.redAccent,
                           ),
                         ),
                       ),
@@ -112,15 +110,14 @@ class _RegisterPageState extends State<RegisterPage> {
                       keyboardType: TextInputType.visiblePassword,
                       obscureText: true,
                       decoration: InputDecoration(
-                        icon: Icon(Icons.lock,
-                            color: Color.fromARGB(255, 201, 185, 231),
-                            size: 30),
+                        icon:
+                            Icon(Icons.lock, color: Colors.redAccent, size: 30),
                         hintText: "Password",
                         labelText: "Password",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(20),
                           borderSide: BorderSide(
-                            color: Color.fromARGB(255, 201, 185, 231),
+                            color: Colors.redAccent,
                           ),
                         ),
                       ),
@@ -137,7 +134,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color.fromARGB(255, 165, 137, 218),
+                      backgroundColor: Colors.redAccent,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20)),
                       elevation: 8,
@@ -163,7 +160,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             TextSpan(
                               text: "Login",
                               style: TextStyle(
-                                color: Color.fromARGB(255, 201, 185, 231),
+                                color: Colors.redAccent,
                                 fontWeight: FontWeight.bold,
                                 decoration: TextDecoration.underline,
                               ),

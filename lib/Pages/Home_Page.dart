@@ -7,8 +7,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../Widgets/ContentProduct.dart';
-import '../Widgets/DiscountCard.dart';
-import '../Widgets/SearchField.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

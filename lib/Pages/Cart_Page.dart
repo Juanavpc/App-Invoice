@@ -106,7 +106,10 @@ class CartPage extends StatelessWidget {
                       height: 30,
                     ),
                     InkWell(
-                      onTap: () {},
+                      onTap: () {
+
+
+                      },
                       child: Container(
                         padding:
                             EdgeInsets.symmetric(vertical: 20, horizontal: 130),

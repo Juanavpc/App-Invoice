@@ -129,7 +129,7 @@ class _HomePageState extends State<HomePage> {
                     child: Row(
                       children: [
                         for(int i=0;i<catList.length;i++)
-                          Container(                                 //deben de ser botones o selecciones que permitan ir a a otra pagina
+                          Container(
                             margin: EdgeInsets.all(8),
                             padding: EdgeInsets.symmetric(
                               vertical: 10,horizontal: 18

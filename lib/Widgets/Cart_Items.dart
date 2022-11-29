@@ -1,10 +1,24 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class CartItems extends StatelessWidget {
+
+class CartItems extends StatefulWidget{
   List items;
 
   CartItems(this.items);
+  @override
+
+  _CartItems createState()=>_CartItems(items);
+
+}
+class _CartItems extends State<CartItems> {
+  List items;
+
+  _CartItems(this.items);
+
+  int counter=1;
 
 
   @override
@@ -12,10 +26,11 @@ class CartItems extends StatelessWidget {
     return Column(
 
       children: items.map((item) =>
+
           Container(
             height: 110,
-            margin: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-            padding: EdgeInsets.all(10),
+            margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+            padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(10),
@@ -25,15 +40,15 @@ class CartItems extends StatelessWidget {
                 Container(
                   height: 70,
                   width: 70,
-                  margin: EdgeInsets.only(right: 15),
+                  margin: const EdgeInsets.only(right: 15),
                   decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 224, 224, 244),
+                    color: const Color.fromARGB(255, 224, 224, 244),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Image.network(item['product']['image']),
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(vertical: 10),
+                  padding: const EdgeInsets.symmetric(vertical: 10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -56,7 +71,7 @@ class CartItems extends StatelessWidget {
                       ),
                       Text(
                         "\$${item['total']}.000",
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                           color: Color(0xFFFD725A),
@@ -72,49 +87,84 @@ class CartItems extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Icon(
-                          Icons.delete,
-                          color: Colors.redAccent,
+                        IconButton(
+                          icon:const Icon(Icons.delete,color: Colors.redAccent),
+                          onPressed: () { setState(() {
+                            items.remove(item);
+                          }); },
+
                         ),
                         Row(
                           children: [
-                            Container(
-                              padding: EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                color: Color(0xFFF7F8FA),
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              child: Icon(
-                                CupertinoIcons.minus,
-                                size: 18,
-                                color: Colors.redAccent,
-                              ),
+                            InkWell(
+                              onTap: (){
+
+                                if(item['quantity']>=1){
+                                  item['quantity']=item['quantity']-1;
+                                }
+
+                                setState(() {
+                                if (item['quantity']==0){
+                                  item['total']= item['product']['Price'] * 1;
+                                }else{
+                                  item['total']= item['product']['Price']  * item['quantity'];
+
+                                }});
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFFF7F8FA),
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: const Icon(
+                                  CupertinoIcons.minus,
+                                  size: 18,
+                                  color: Colors.redAccent,
+                                ),
+                              )
+                              ,
                             ),
-                            SizedBox(
+
+                            const SizedBox(
                               width: 8,
                             ),
                             Text(
                               "${item['quantity']}",
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 17,
                                 fontWeight: FontWeight.w400,
                               ),
-                            ),
-                            SizedBox(
+                            )
+                            ,
+
+                            const SizedBox(
                               width: 8,
                             ),
-                            Container(
-                              padding: EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                color: Color(0xFFF7F8FA),
-                                borderRadius: BorderRadius.circular(20),
+                            InkWell(
+                              onTap: (){
+
+                                item['quantity']=item['quantity']+1;
+                                setState(() {
+                                  item['total']= item['product']['Price'] * item['quantity'];
+                                });
+
+                              },
+                              child: Container(
+                                padding: EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  color: Color(0xFFF7F8FA),
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: const Icon(
+                                  CupertinoIcons.add,
+                                  size: 18,
+                                  color: Colors.redAccent,
+                                ),
                               ),
-                              child: Icon(
-                                CupertinoIcons.add,
-                                size: 18,
-                                color: Colors.redAccent,
-                              ),
-                            ),
+                            )
+                            ,
+
                           ],
                         )
                       ],

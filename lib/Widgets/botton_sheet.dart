@@ -11,6 +11,7 @@ class CustomBottomSheet extends StatefulWidget {
   String desc;
   List listProductCart;
 
+
   CustomBottomSheet(this.id, this.name, this.price, this.img, this.desc, this.listProductCart);
 
   @override
@@ -26,7 +27,7 @@ class _CustomBottomSheet extends State<CustomBottomSheet>{
   String desc;
   List listProductCart;
   Map product={};
-  List items=[];
+
   Map productwithcounter={};
 
   _CustomBottomSheet(this.id, this.name, this.price, this.img, this.desc, this.listProductCart);
@@ -190,28 +191,52 @@ class _CustomBottomSheet extends State<CustomBottomSheet>{
           SizedBox(height: 30),
           InkWell(
             onTap: (){
-                product={
-                  'Product_ID':id,
-                  'Product_name':name,
-                  'Product_descr':desc,
-                  'Price':price,
-                  'image':img
-                };
-                productwithcounter={
-                  'product':product,
-                  'quantity':counter,
-                  'total':price*counter
-                };
-                product.addAll(product);
-                productwithcounter.addAll(productwithcounter);
-                items.add(productwithcounter);
+              bool datafind=false;
+              int c=0;
+              for (int i=0; i<productwithcounter.length;i++){
+                print("buenas imprime: ${productwithcounter['product']['Product_ID']}");
+              }
+
+              productwithcounter.forEach((key, value) {
+                  print('imprimio: ${c++}');
+                if(key=='product'){
+                 if(value['Product_ID']==id){
+                   datafind=true;
+                 }
+                }if(key=='quantity'&& datafind==true){
+
+                  print('antes :$value');
+                  value=value+counter;
+                  print('despues: $value');
+
+                }
+                print("buenass ");
+              });
+
+              product={
+                'Product_ID':id,
+                'Product_name':name,
+                'Product_descr':desc,
+                'Price':price,
+                'image':img
+              };
+
+              productwithcounter={
+                'product':product,
+                'quantity':counter,
+                'total':price*counter
+              };
+
+              product.addAll(product);
+              productwithcounter.addAll(productwithcounter);
+
+
+
+
+
+
+
                 addProductCart(productwithcounter);
-
-
-
-
-
-
               Navigator.push(context, MaterialPageRoute(
                 builder: (context) => CartPage(listProductCart),
               ));
@@ -236,6 +261,8 @@ class _CustomBottomSheet extends State<CustomBottomSheet>{
       ),
     );
   }
+void add(int value,int quantity){
 
+}
 
 }

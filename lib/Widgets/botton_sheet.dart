@@ -11,46 +11,46 @@ class CustomBottomSheet extends StatefulWidget {
   String desc;
   List listProductCart;
 
-
-  CustomBottomSheet(this.id, this.name, this.price, this.img, this.desc, this.listProductCart);
+  CustomBottomSheet(this.id, this.name, this.price, this.img, this.desc,
+      this.listProductCart);
 
   @override
-  _CustomBottomSheet createState()=>_CustomBottomSheet(id,name,price,img,desc,listProductCart);
+  _CustomBottomSheet createState() =>
+      _CustomBottomSheet(id, name, price, img, desc, listProductCart);
 }
 
-class _CustomBottomSheet extends State<CustomBottomSheet>{
-
+class _CustomBottomSheet extends State<CustomBottomSheet> {
   int id;
   String name;
   int price;
   String img;
   String desc;
   List listProductCart;
-  Map product={};
+  Map product = {};
 
-  Map productwithcounter={};
+  Map productwithcounter = {};
 
-  _CustomBottomSheet(this.id, this.name, this.price, this.img, this.desc, this.listProductCart);
-  int counter=1;
-  int number=1;
-  int total= 0;
-  final StreamController<int> streamController=new StreamController<int>();
-  final StreamController<List> itemsController=new StreamController<List>();
+  _CustomBottomSheet(this.id, this.name, this.price, this.img, this.desc,
+      this.listProductCart);
+  int counter = 1;
+  int number = 1;
+  int total = 0;
+  final StreamController<int> streamController = new StreamController<int>();
+  final StreamController<List> itemsController = new StreamController<List>();
   @override
   void initState() {
     super.initState();
-    total=price;
-
+    total = price;
   }
 
-  @override 
+  @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
     streamController.close();
   }
 
-  void addProductCart(Map product){
+  void addProductCart(Map product) {
     setState(() {
       listProductCart.add(product);
     });
@@ -90,20 +90,18 @@ class _CustomBottomSheet extends State<CustomBottomSheet>{
                 ),
               ),
               SizedBox(width: 30),
-
               InkWell(
                 onTap: () {
                   streamController.sink.add(--counter);
                   setState(() {
-                    if (counter==0){
-                      total= price * 1;
-                      }else{
-                      total= price * counter;
+                    if (counter == 0) {
+                      total = price * 1;
+                    } else {
+                      total = price * counter;
                     }
-
                   });
                 },
-                child:Container(
+                child: Container(
                   padding: EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     color: Color(0xFFF7F8FA),
@@ -113,40 +111,39 @@ class _CustomBottomSheet extends State<CustomBottomSheet>{
                     CupertinoIcons.minus,
                     size: 18,
                     color: Colors.redAccent,
-
                   ),
-
                 ),
               ),
-              SizedBox(width: 8,),
+              SizedBox(
+                width: 8,
+              ),
               StreamBuilder(
-                  initialData: 1,
+                initialData: 1,
                 stream: streamController.stream,
-                builder: (context,snapshot){
-                    if (snapshot.data! >= 1){
-                    number=snapshot.data!;
-                    }else{
-                      counter=1;
-                      number=1;
-                    }
-                    return Text(
-                      "${number}",
-                      style: TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    );
+                builder: (context, snapshot) {
+                  if (snapshot.data! >= 1) {
+                    number = snapshot.data!;
+                  } else {
+                    counter = 1;
+                    number = 1;
+                  }
+                  return Text(
+                    "${number}",
+                    style: TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  );
                 },
               ),
-
-
-              SizedBox(width: 8,),
-
+              SizedBox(
+                width: 8,
+              ),
               InkWell(
                 onTap: () {
                   streamController.sink.add(++counter);
                   setState(() {
-                    total= price * counter;
+                    total = price * counter;
                   });
                 },
                 child: Container(
@@ -162,8 +159,6 @@ class _CustomBottomSheet extends State<CustomBottomSheet>{
                   ),
                 ),
               ),
-              
-
             ],
           ),
           SizedBox(height: 40),
@@ -178,7 +173,6 @@ class _CustomBottomSheet extends State<CustomBottomSheet>{
                 ),
               ),
               Text(
-
                 "\$${total}.000",
                 style: TextStyle(
                   fontSize: 20,
@@ -190,56 +184,46 @@ class _CustomBottomSheet extends State<CustomBottomSheet>{
           ),
           SizedBox(height: 30),
           InkWell(
-            onTap: (){
-              bool datafind=false;
-              int c=0;
-              for (int i=0; i<productwithcounter.length;i++){
-                print("buenas imprime: ${productwithcounter['product']['Product_ID']}");
-              }
+            onTap: () {
 
-              productwithcounter.forEach((key, value) {
-                  print('imprimio: ${c++}');
-                if(key=='product'){
-                 if(value['Product_ID']==id){
-                   datafind=true;
-                 }
-                }if(key=='quantity'&& datafind==true){
+              var exist = false;
+              late int itemPosition;
 
-                  print('antes :$value');
-                  value=value+counter;
-                  print('despues: $value');
-
+              for (var map in listProductCart) {
+                if (map['product']['Product_ID'].toString() == id.toString()) {
+                  exist = true;
+                  itemPosition = listProductCart.indexOf(map);
                 }
-                print("buenass ");
-              });
+              }
+              if (exist) {
+                listProductCart[itemPosition]['quantity'] = listProductCart[itemPosition]['quantity'] + counter;
+                listProductCart[itemPosition]['total'] = listProductCart[itemPosition]['total'] + total;
+              } else {
+                product = {
+                  'Product_ID': id,
+                  'Product_name': name,
+                  'Product_descr': desc,
+                  'Price': price,
+                  'image': img
+                };
 
-              product={
-                'Product_ID':id,
-                'Product_name':name,
-                'Product_descr':desc,
-                'Price':price,
-                'image':img
-              };
+                productwithcounter = {
+                  'product': product,
+                  'quantity': counter,
+                  'total': price * counter
+                };
 
-              productwithcounter={
-                'product':product,
-                'quantity':counter,
-                'total':price*counter
-              };
-
-              product.addAll(product);
-              productwithcounter.addAll(productwithcounter);
-
-
-
-
-
-
+                product.addAll(product);
+                productwithcounter.addAll(productwithcounter);
 
                 addProductCart(productwithcounter);
-              Navigator.push(context, MaterialPageRoute(
-                builder: (context) => CartPage(listProductCart),
-              ));
+              }
+
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CartPage(listProductCart),
+                  ));
             },
             child: Container(
               padding: EdgeInsets.symmetric(vertical: 20, horizontal: 100),
@@ -261,8 +245,6 @@ class _CustomBottomSheet extends State<CustomBottomSheet>{
       ),
     );
   }
-void add(int value,int quantity){
 
-}
-
+  void add(int value, int quantity) {}
 }

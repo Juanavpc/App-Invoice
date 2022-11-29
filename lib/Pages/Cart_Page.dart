@@ -2,7 +2,6 @@ import 'package:app_invoice/Widgets/Cart_Items.dart';
 import 'package:flutter/material.dart';
 
 class CartPage extends StatelessWidget {
-
   List items;
   CartPage(this.items);
 
@@ -106,10 +105,7 @@ class CartPage extends StatelessWidget {
                       height: 30,
                     ),
                     InkWell(
-                      onTap: () {
-
-
-                      },
+                      onTap: () {},
                       child: Container(
                         padding:
                             EdgeInsets.symmetric(vertical: 20, horizontal: 130),

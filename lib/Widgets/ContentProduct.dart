@@ -37,7 +37,10 @@ Widget ContentStreamProducts(ProductProvider productprovider, listProductCart){
           return ContentProducts(snapshot.data as List<ModelProduct>,context, listProductCart);
         }else{
           return Center(
-            child: CircularProgressIndicator(),
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFFD725A)), //el color del simbolo de carga
+
+            ),
           );
         }
       }

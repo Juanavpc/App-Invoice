@@ -184,7 +184,7 @@ class _LoginPageState extends State<LoginPage> {
         if (_usernameController.text == elem.Email &&
             _passwordController.text == elem.password) {
           status = true;
-          return pageRoute(elem.Email);
+          return pageRoute(elem.Client_name, elem.Client_ID);
         }
       }).toList();
       if (status == false) {
@@ -197,9 +197,11 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  void pageRoute(String user) async {
+  void pageRoute(String user, int id) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     await pref.setString("login", user);
+    await pref.setInt("login_id", id);
+
     Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => HomePage()), (route) => false);
   }

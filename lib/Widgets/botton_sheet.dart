@@ -28,6 +28,7 @@ class _CustomBottomSheet extends State<CustomBottomSheet> {
   List listProductCart;
   Map product = {};
 
+
   Map productwithcounter = {};
 
   _CustomBottomSheet(this.id, this.name, this.price, this.img, this.desc,
@@ -35,6 +36,7 @@ class _CustomBottomSheet extends State<CustomBottomSheet> {
   int counter = 1;
   int number = 1;
   int total = 0;
+  int total_compra=0;
   final StreamController<int> streamController = new StreamController<int>();
   final StreamController<List> itemsController = new StreamController<List>();
   @override
@@ -194,7 +196,9 @@ class _CustomBottomSheet extends State<CustomBottomSheet> {
                   exist = true;
                   itemPosition = listProductCart.indexOf(map);
                 }
+
               }
+
               if (exist) {
                 listProductCart[itemPosition]['quantity'] = listProductCart[itemPosition]['quantity'] + counter;
                 listProductCart[itemPosition]['total'] = listProductCart[itemPosition]['total'] + total;
@@ -218,11 +222,16 @@ class _CustomBottomSheet extends State<CustomBottomSheet> {
 
                 addProductCart(productwithcounter);
               }
+              total_compra=0;
+              for (var map in listProductCart) {
+                total_compra=map['total']+total_compra;
+              }
+              print("el total de la compra es ${total_compra}");
 
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => CartPage(listProductCart),
+                    builder: (context) => CartPage(listProductCart,total_compra),
                   ));
             },
             child: Container(

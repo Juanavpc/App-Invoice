@@ -194,9 +194,9 @@ class _RegisterPageState extends State<RegisterPage> {
         }
       }).toList();
       if (status == false) {
-        await getprovider.addClients(_usernameController.text,
+        var response=await getprovider.addClients(_usernameController.text,
             _passwordController.text, _emailController.text);
-        pageRoute(_emailController.text);
+        pageRoute(_usernameController.text,response);
       } else {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text("Ya existe")));
@@ -207,9 +207,10 @@ class _RegisterPageState extends State<RegisterPage> {
     }
   }
 
-  void pageRoute(String user) async {
+  void pageRoute(String user, int id) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     await pref.setString("login", user);
+    await pref.setInt("login_id", id);
     Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => HomePage()), (route) => false);
   }

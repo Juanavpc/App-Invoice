@@ -1,12 +1,12 @@
-import 'dart:js_util';
 import 'package:app_invoice/Pages/Cart_Page.dart';
-import 'package:app_invoice/Pages/Login_Page.dart';
 import 'package:app_invoice/Providers/product_provider.dart';
-import 'package:app_invoice/Widgets/Product_Card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../Widgets/ContentProduct.dart';
+import 'Login_Page.dart';
+import 'invoice_page.dart';
+import 'package:intl/intl.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -23,19 +23,30 @@ class _HomePageState extends State<HomePage> {
   final productProvider = ProductProvider();
   String _currentElection = "All";
   List listProductCart = [];
+  int total_compra=0;
+  int id=0;
+
+
+
+
+
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getCred();
+
   }
 
   void getCred() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     setState(() {
       user = pref.getString("login")!;
+      id= pref.getInt("login_id")!;
+
     });
+    print("en el home page el id es: ${id}");
   }
 
   void onTapped(int index){
@@ -55,6 +66,14 @@ class _HomePageState extends State<HomePage> {
       listProductCart.add(product);
     });
   }
+  void addTotalCompra(){
+    total_compra=0;
+    setState(() {
+      listProductCart.map((e) =>
+      total_compra=e['total']+total_compra
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +81,7 @@ class _HomePageState extends State<HomePage> {
       productProvider.getProducts();
     }
     return Scaffold(
-      backgroundColor: Colors.grey,
+
      body: SingleChildScrollView(
        child: SafeArea(
          child: Padding(
@@ -74,35 +93,38 @@ class _HomePageState extends State<HomePage> {
                  child: Row(
                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                    children: [
-                     Container(
-                       width: MediaQuery.of(context).size.width/1.5,
-                       decoration: BoxDecoration(
-                         color:Color(0xFFF7F8Fa),
-                         borderRadius: BorderRadius.circular(10),
-                       ),
-                       child: TextFormField(
-                         decoration: InputDecoration(
-                           label: Text("Find your product"),
-                           border: InputBorder.none,
-                           prefixIcon:  Icon(
-                             Icons.search,
-                             size: 30,
-                             color: Colors.grey,
-                           )
-                         ),
-                       ),
+                   RichText(
+                   textAlign: TextAlign.left,
+                   text: TextSpan(
+                     style: new TextStyle(
+                       fontSize: 15.0,
+                       color: Colors.white,
                      ),
-                     Container(
-                       padding: EdgeInsets.all(15),
-                       decoration: BoxDecoration(
-                         color: Color(0xFFF7F8FA),
-                         borderRadius: BorderRadius.circular(10),
+                     children: <TextSpan>[
+                       new TextSpan(text: 'Hello, Welcome 👋\n', style: new TextStyle(color: Colors.black)),
+                       new TextSpan(text: user, style: new TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
+                     ],
+                   ),
+                 ),
+                     InkWell(
+                       onTap: () async{
+                         SharedPreferences pref=await SharedPreferences.getInstance();
+                         await pref.clear();
+                         Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context)=>LoginPage()), (route) => false);
 
-                       ),
-                       child: Icon(
-                         Icons.notifications_none,
-                         size: 30,
-                         color:Colors.grey
+                       },
+                       child: Container(
+                         padding: EdgeInsets.all(15),
+                         decoration: BoxDecoration(
+                           color: Color(0xFFF7F8FA),
+                           borderRadius: BorderRadius.circular(10),
+
+                         ),
+                         child: Icon(
+                             Icons.logout_outlined,
+                             size: 30,
+                             color:Colors.grey
+                         ),
                        ),
                      )
                    ],
@@ -161,6 +183,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                ),
                ContentStreamProducts(productProvider, listProductCart),
+
              ],
            ),
          ),
@@ -176,7 +199,7 @@ class _HomePageState extends State<HomePage> {
           if(index == 0){
             Navigator.push(context, MaterialPageRoute(builder: (context)=>HomePage()));
           }else if(index == 1){
-            Navigator.push(context, MaterialPageRoute(builder: (context)=>CartPage(listProductCart)));
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>CartPage(listProductCart,total_compra)));
           }
         },
         //onTap: (index){
@@ -185,29 +208,20 @@ class _HomePageState extends State<HomePage> {
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home),label: ''),
           BottomNavigationBarItem(icon: Icon(CupertinoIcons.cart_fill),label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.favorite),label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.person),label: ''),
         ],
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color(0xFFFD725A),
-        onPressed: (){},
+        child: const Icon(Icons.library_books),
+        onPressed: (){
+          getCred();
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>InvoicePage(id)));
+
+
+        },
       ),
       floatingActionButtonLocation:
       FloatingActionButtonLocation.miniCenterDocked,
     );
   }
 }
-/*RichText(
-            textAlign: TextAlign.left,
-            text: TextSpan( 
-              style: new TextStyle(
-                fontSize: 15.0,
-                color: Colors.white,
-              ),
-              children: <TextSpan>[
-                new TextSpan(text: 'Hello, Welcome\n', style: new TextStyle(color: Colors.black)),
-                new TextSpan(text: user, style: new TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
-              ],
-            ),
-          ),*/

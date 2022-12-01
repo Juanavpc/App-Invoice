@@ -1,24 +1,40 @@
+import 'package:app_invoice/Models/model_invoice.dart';
+import 'package:app_invoice/Providers/invoice_provider.dart';
 import 'package:app_invoice/Widgets/Cart_Items.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../Widgets/invoices_items.dart';
 
 
+class InvoicePage extends StatefulWidget {
+  int id;
+   InvoicePage(this.id);
 
-class CartPage extends StatefulWidget {
-  List items;
-  int total_compra;
-
-  CartPage(this.items,this.total_compra);
   @override
-  _CartPage createState() => _CartPage(items,total_compra);
+  State<InvoicePage> createState() => _InvoicePage(id);
 }
 
-class _CartPage extends State<CartPage> {
-  List items;
-  int total_compra;
-  _CartPage(this.items,this.total_compra);
+class _InvoicePage extends State<InvoicePage>{
+  int id;
+  _InvoicePage(this.id);
+
+  final getProvider1 = InvoiceProvider();
+
+
+  @override
+  void initState() {
+    super.initState();
+
+
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
+
+    getProvider1.getInvoicesClient(id);
     return Scaffold(
       body: SingleChildScrollView(
         child: SafeArea(
@@ -39,7 +55,7 @@ class _CartPage extends State<CartPage> {
                         ),
                       ),
                       Text(
-                        "Cart",
+                        "Orders",
                         style: TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.w600,
@@ -55,11 +71,10 @@ class _CartPage extends State<CartPage> {
                         ),
                       )
                     ]),
+
+
               ),
-              Container(
-                padding: EdgeInsets.only(top: 15),
-                child: CartItems(items,total_compra)
-                ),
+              ContentStreamInvoices(getProvider1,context)
 
             ],
           ),

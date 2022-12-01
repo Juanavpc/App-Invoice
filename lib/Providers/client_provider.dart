@@ -21,7 +21,7 @@ class ClientProvider {
       throw Exception("Ocurrió algo  ${resp.statusCode}");
     }
   }
-  Future<String> addClients( String name, String password, String email) async {
+  Future<int> addClients( String name, String password, String email) async {
     Map data={  'Client_name': name,
       'password': password,
       'Email': email
@@ -31,7 +31,7 @@ class ClientProvider {
     headers: {"Content-Type": "application/json"},body:body
     );
     print(resp.body.toString());
-    return resp.statusCode.toString();
+    return int.parse(resp.body);
   }
 
 

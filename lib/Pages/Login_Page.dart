@@ -175,10 +175,10 @@ class _LoginPageState extends State<LoginPage> {
     final getprovider = ClientProvider();
     var data = await getprovider.getClients();
 
-    if (_usernameController.text.isNotEmpty &&
+    if (_usernameController.text.isNotEmpty &&                                // Verifica que los campos no estén vacíos
         _passwordController.text.isNotEmpty) {
-      data.map((elem) {
-        if (_usernameController.text == elem.Email &&
+      data.map((elem) {                                                       // Recorre la lista de clientes
+        if (_usernameController.text == elem.Email &&                         // Verifica que el email ingresado sea igual al de la lista
             _passwordController.text == elem.password) {
           status = true;
           return pageRoute(elem.Client_name, elem.Client_ID);

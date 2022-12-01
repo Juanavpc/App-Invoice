@@ -1,21 +1,20 @@
 import 'package:app_invoice/Widgets/Cart_Items.dart';
 import 'package:flutter/material.dart';
 
-
-
 class CartPage extends StatefulWidget {
-  List items;
+  List items;                                                    // Lista de productos que se obtiene de la api
   int total_compra;
 
-  CartPage(this.items,this.total_compra);
+  CartPage(this.items, this.total_compra);                       // Constructor
+
   @override
-  _CartPage createState() => _CartPage(items,total_compra);
+  _CartPage createState() =>_CartPage(items, total_compra);      // Constructor de la clase
 }
 
 class _CartPage extends State<CartPage> {
   List items;
   int total_compra;
-  _CartPage(this.items,this.total_compra);
+  _CartPage(this.items, this.total_compra);
 
   @override
   Widget build(BuildContext context) {
@@ -57,10 +56,8 @@ class _CartPage extends State<CartPage> {
                     ]),
               ),
               Container(
-                padding: EdgeInsets.only(top: 15),
-                child: CartItems(items,total_compra)
-                ),
-
+                  padding: EdgeInsets.only(top: 15),
+                  child: CartItems(items, total_compra)),
             ],
           ),
         ),

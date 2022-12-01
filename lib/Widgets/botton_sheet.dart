@@ -37,24 +37,24 @@ class _CustomBottomSheet extends State<CustomBottomSheet> {
   int number = 1;
   int total = 0;
   int total_compra=0;
-  final StreamController<int> streamController = new StreamController<int>();
-  final StreamController<List> itemsController = new StreamController<List>();
+  final StreamController<int> streamController = new StreamController<int>();       // StreamController que permite la comunicación entre el widget y el provider
+  final StreamController<List> itemsController = new StreamController<List>();      // StreamController que permite la comunicación entre el widget y el provider
+  
   @override
-  void initState() {
+  void initState() {                                      // Método que se ejecuta al iniciar el widget
     super.initState();
     total = price;
   }
 
   @override
-  void dispose() {
-    // TODO: implement dispose
+  void dispose() {                                        // Método que se ejecuta al cerrar el widget            
     super.dispose();
-    streamController.close();
+    streamController.close();                             // Cierra el StreamController      
   }
 
-  void addProductCart(Map product) {
-    setState(() {
-      listProductCart.add(product);
+  void addProductCart(Map product) {                      // Método que agrega un producto al carrito
+    setState(() {                                         // Método que permite actualizar el estado del widget  
+      listProductCart.add(product);                       // Agrega el producto al carrito
     });
   }
 
@@ -94,9 +94,9 @@ class _CustomBottomSheet extends State<CustomBottomSheet> {
               SizedBox(width: 30),
               InkWell(
                 onTap: () {
-                  streamController.sink.add(--counter);
-                  setState(() {
-                    if (counter == 0) {
+                  streamController.sink.add(--counter);         // Disminuye el contador
+                  setState(() {                                 // Método que permite actualizar el estado del widget
+                    if (counter == 0) {             
                       total = price * 1;
                     } else {
                       total = price * counter;
@@ -120,9 +120,9 @@ class _CustomBottomSheet extends State<CustomBottomSheet> {
                 width: 8,
               ),
               StreamBuilder(
-                initialData: 1,
-                stream: streamController.stream,
-                builder: (context, snapshot) {
+                initialData: 1,                                 // Valor inicial del StreamBuilder
+                stream: streamController.stream,                // Stream que permite la comunicación entre el widget y el provider
+                builder: (context, snapshot) {                  // Método que permite construir el widget
                   if (snapshot.data! >= 1) {
                     number = snapshot.data!;
                   } else {
@@ -143,7 +143,7 @@ class _CustomBottomSheet extends State<CustomBottomSheet> {
               ),
               InkWell(
                 onTap: () {
-                  streamController.sink.add(++counter);
+                  streamController.sink.add(++counter);           // Aumenta el contador
                   setState(() {
                     total = price * counter;
                   });
@@ -188,22 +188,22 @@ class _CustomBottomSheet extends State<CustomBottomSheet> {
           InkWell(
             onTap: () {
 
-              var exist = false;
-              late int itemPosition;
+              var exist = false;                      
+              late int itemPosition;                                              // Variable que almacena la posición del producto en el carrito
 
-              for (var map in listProductCart) {
-                if (map['product']['Product_ID'].toString() == id.toString()) {
+              for (var map in listProductCart) {                                  // Ciclo que recorre el carrito
+                if (map['product']['Product_ID'].toString() == id.toString()) {   // Condición que verifica si el producto ya existe en el carrito
                   exist = true;
-                  itemPosition = listProductCart.indexOf(map);
+                  itemPosition = listProductCart.indexOf(map);                    // Asigna la posición del producto en el carrito
                 }
 
               }
 
-              if (exist) {
-                listProductCart[itemPosition]['quantity'] = listProductCart[itemPosition]['quantity'] + counter;
-                listProductCart[itemPosition]['total'] = listProductCart[itemPosition]['total'] + total;
+              if (exist) {                                                                                            // Condición que verifica si el producto ya existe en el carrito
+                listProductCart[itemPosition]['quantity'] = listProductCart[itemPosition]['quantity'] + counter;      // Aumenta la cantidad del producto en el carrito
+                listProductCart[itemPosition]['total'] = listProductCart[itemPosition]['total'] + total;              // Aumenta el total del producto en el carrito
               } else {
-                product = {
+                product = {                                                                                           // Objeto que almacena los datos del producto                  
                   'Product_ID': id,
                   'Product_name': name,
                   'Product_descr': desc,
@@ -217,14 +217,13 @@ class _CustomBottomSheet extends State<CustomBottomSheet> {
                   'total': price * counter
                 };
 
-                product.addAll(product);
-                productwithcounter.addAll(productwithcounter);
-
-                addProductCart(productwithcounter);
+                product.addAll(product);                                                                    // Agrega los datos del producto al carrito
+                productwithcounter.addAll(productwithcounter);                                              // Agrega los datos del producto con la cantidad y el total al carrito
+                addProductCart(productwithcounter);                                                         // Agrega el producto al carrito
               }
               total_compra=0;
-              for (var map in listProductCart) {
-                total_compra=map['total']+total_compra;
+              for (var map in listProductCart) {                                                            // Ciclo que recorre el carrito
+                total_compra=map['total']+total_compra;                                                     // Suma el total de los productos en el carrito
               }
               print("el total de la compra es ${total_compra}");
 

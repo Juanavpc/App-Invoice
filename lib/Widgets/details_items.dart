@@ -8,9 +8,8 @@ import 'package:flutter/material.dart';
 import '../Pages/InvoiceDetails_page.dart';
 
 
-Widget ContentInvoices(List<ModelInvoiceDetails> data){
-  double count= data.length+1-1 ;
-
+Widget ContentInvoices(List<ModelInvoiceDetails> data){                       // Widget que muestra los detalles de una factura
+  double count= data.length+1-1 ;                                             //se obtiene el numero de detalles de la factura
 
   return  Column(
     children: data.map((item) =>
@@ -36,8 +35,6 @@ Widget ContentInvoices(List<ModelInvoiceDetails> data){
                       Text("${item.Product_name}",style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold,color: Color(0xFFFD725A)),),
                       SizedBox(height: 10,),
                       Text("Cant: ${item.Quantity}",style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold,color: Colors.grey)),
-
-
                     ],
                   ),
                   SizedBox(width: 20,),
@@ -53,25 +50,18 @@ Widget ContentInvoices(List<ModelInvoiceDetails> data){
                       )
                     ],
                   ),
-
                 ],
-
               ),
               Divider(thickness: count,color: Colors.grey.withOpacity(0.5),)
             ],
           ),
         ),
-
-
-
     ).toList(),
   );
-
 }
 
 
-
-Widget ContentStreamDetails(DetailsProvider getProvider1){
+Widget ContentStreamDetails(DetailsProvider getProvider1){                              // Widget que muestra los detalles de una factura            
   return StreamBuilder(
       stream: getProvider1.DetailsStream,
       builder: (BuildContext context, AsyncSnapshot<List> snapshot){
@@ -81,7 +71,6 @@ Widget ContentStreamDetails(DetailsProvider getProvider1){
           return Center(
             child: CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFFD725A)), //el color del simbolo de carga
-
             ),
           );
         }

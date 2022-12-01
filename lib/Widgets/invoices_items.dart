@@ -2,13 +2,10 @@ import 'package:app_invoice/Models/model_invoice.dart';
 import 'package:app_invoice/Providers/invoice_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import '../Pages/InvoiceDetails_page.dart';
 
 
-Widget ContentInvoices(List<ModelInvoice> data,context){
-
-
+Widget ContentInvoices(List<ModelInvoice> data,context){                       // Widget que muestra las facturas
    return  Column(
         children: data.map((item) =>
             Padding(
@@ -160,19 +157,13 @@ Widget ContentInvoices(List<ModelInvoice> data,context){
                         )
                       ],
                     ),
-
                   ),
                 )
             )
-
-
         ).toList(),);
-
 }
 
-
-
-Widget ContentStreamInvoices(InvoiceProvider getProvider1, _context){
+Widget ContentStreamInvoices(InvoiceProvider getProvider1, _context){             // Widget que muestra las facturas
   return StreamBuilder(
       stream: getProvider1.productsStream,
       builder: (BuildContext context, AsyncSnapshot<List> snapshot){

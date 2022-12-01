@@ -12,13 +12,13 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  TextEditingController _usernameController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
+  TextEditingController _usernameController = TextEditingController();        // Controlador del campo de texto del usuario
+  TextEditingController _passwordController = TextEditingController();        // Controlador del campo de texto de la contraseña
 
   @override
-  void initState() {
+  void initState() {                                                          // Método que se ejecuta al iniciar el widget               
     super.initState();
-    checkLogin();
+    checkLogin();                                                             // Método que verifica si el usuario ya está logueado
   }
 
   void checkLogin() async {
@@ -62,7 +62,6 @@ class _LoginPageState extends State<LoginPage> {
                       fontWeight: FontWeight.bold,
                       fontFamily: "Handlee",
                     ),
-                    //textAlign: TextAlign.justify,
                   ),
                   SizedBox(height: 55),
                   Padding(
@@ -126,8 +125,6 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     onPressed: () {
                       login();
-                      //ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('${_usernameController.text} y ${_passwordController.text}')));
-                      //
                     },
                   ),
                   SizedBox(height: 20),

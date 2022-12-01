@@ -8,17 +8,17 @@ class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
 
   @override
-  State<RegisterPage> createState() => _RegisterPageState();
+  State<RegisterPage> createState() => _RegisterPageState();                // Constructor de la clase
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  TextEditingController _usernameController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
+  TextEditingController _usernameController = TextEditingController();      // Controlador del campo de texto del nombre de usuario
+  TextEditingController _emailController = TextEditingController();         // Controlador del campo de texto del correo electrónico 
+  TextEditingController _passwordController = TextEditingController();      // Controlador del campo de texto de la contraseña
 
   @override
-  void initState() {
-    super.initState();
+  void initState() {                                                        // Método que se ejecuta al iniciar el widget                     
+    super.initState();                                                      // Llamada al método de la clase padre
     checkLogin();
   }
 
@@ -182,21 +182,21 @@ class _RegisterPageState extends State<RegisterPage> {
 
   void register() async {
     var status = false;
-    final getprovider = ClientProvider();
-    var data = await getprovider.getClients();
+    final getprovider = ClientProvider();                         // Instancia de la clase ClientProvider
+    var data = await getprovider.getClients();                    // Se obtienen los datos de los clientes
 
-    if (_usernameController.text.isNotEmpty &&
+    if (_usernameController.text.isNotEmpty &&                    // Se verifica que los campos no estén vacíos
         _passwordController.text.isNotEmpty &&
         _emailController.text.isNotEmpty) {
-      data.map((elem) {
-        if (_emailController.text == elem.Email) {
-          status = true;
+      data.map((elem) {                                           // Se recorre la lista de clientes
+        if (_emailController.text == elem.Email) {                // Se verifica que el correo no esté registrado
+          status = true;                                          // Se cambia el estado a true
         }
       }).toList();
-      if (status == false) {
-        var response=await getprovider.addClients(_usernameController.text,
+      if (status == false) {                                      // Si el estado es false, se procede a registrar el usuario                
+        var response=await getprovider.addClients(_usernameController.text,         // Se envían los datos al método addClients
             _passwordController.text, _emailController.text);
-        pageRoute(_usernameController.text,response);
+        pageRoute(_usernameController.text,response);                               // Se envía el nombre de usuario y el estado de la respuesta
       } else {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text("Ya existe")));
@@ -206,8 +206,8 @@ class _RegisterPageState extends State<RegisterPage> {
           .showSnackBar(SnackBar(content: Text("Blank Value Found")));
     }
   }
-
-  void pageRoute(String user, int id) async {
+  
+  void pageRoute(String user, int id) async {                                   //Funcion para guardar el usuario en el shared preferences
     SharedPreferences pref = await SharedPreferences.getInstance();
     await pref.setString("login", user);
     await pref.setInt("login_id", id);

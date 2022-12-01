@@ -27,49 +27,42 @@ class _HomePageState extends State<HomePage> {
   int id=0;
 
 
-
-
-
-
   @override
-  void initState() {
-    // TODO: implement initState
+  void initState() {                           // Método que se ejecuta al iniciar el widget
     super.initState();
     getCred();
-
   }
 
-  void getCred() async {
+  void getCred() async {                       // Método que obtiene el nombre del usuario
     SharedPreferences pref = await SharedPreferences.getInstance();
     setState(() {
       user = pref.getString("login")!;
       id= pref.getInt("login_id")!;
 
     });
-    print("en el home page el id es: ${id}");
   }
 
-  void onTapped(int index){
+  void onTapped(int index){                     // Método que cambia el índice de la barra de navegación
     setState(() {
       _selectIndex = index;
     });
   }
 
-  void onElection(String value){
+  void onElection(String value){                // Método que cambia el valor de las categorías de productos
     setState(() {
       _currentElection = value;
     });
   }
 
-  void addProductCart(Map product){
+  void addProductCart(Map product){             // Método que agrega un producto al carrito
     setState(() {
       listProductCart.add(product);
     });
   }
-  void addTotalCompra(){
+  void addTotalCompra(){                        // Método que suma el total de la compra
     total_compra=0;
     setState(() {
-      listProductCart.map((e) =>
+      listProductCart.map((e) =>                // Recorre la lista de productos del carrito
       total_compra=e['total']+total_compra
       );
     });
@@ -77,7 +70,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    if(_currentElection == "All"){
+    if(_currentElection == "All"){                    // Si la categoría es "All" se muestran todos los productos
       productProvider.getProducts();
     }
     return Scaffold(
@@ -111,7 +104,6 @@ class _HomePageState extends State<HomePage> {
                          SharedPreferences pref=await SharedPreferences.getInstance();
                          await pref.clear();
                          Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context)=>LoginPage()), (route) => false);
-
                        },
                        child: Container(
                          padding: EdgeInsets.all(15),
@@ -168,10 +160,10 @@ class _HomePageState extends State<HomePage> {
                                Colors.grey,),
                               ),
                               onPressed: () {
-                                if(catList[i]=="All"){
+                                if(catList[i]=="All"){                            // Si la categoría es "All" se muestran todos los productos
                                   onElection("All");
                                   productProvider.getProducts();
-                                }else{
+                                }else{                                            // Si la categoría es diferente a "All" se muestran los productos de la categoría seleccionada
                                   onElection(catList[i]);
                                   productProvider.getProductsByCategory(catList[i]);
                                 }
@@ -182,7 +174,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                ),
-               ContentStreamProducts(productProvider, listProductCart),
+               ContentStreamProducts(productProvider, listProductCart),           // Widget que muestra los productos
 
              ],
            ),
@@ -202,8 +194,6 @@ class _HomePageState extends State<HomePage> {
             Navigator.push(context, MaterialPageRoute(builder: (context)=>CartPage(listProductCart,total_compra)));
           }
         },
-        //onTap: (index){
-        //},
         type: BottomNavigationBarType.fixed,
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home),label: ''),
@@ -216,8 +206,6 @@ class _HomePageState extends State<HomePage> {
         onPressed: (){
           getCred();
           Navigator.push(context, MaterialPageRoute(builder: (context)=>InvoicePage(id)));
-
-
         },
       ),
       floatingActionButtonLocation:

@@ -35,19 +35,19 @@ class _CartItems extends State<CartItems> {
   @override
   void initState() {
     super.initState();
-    if(items.length>2){
-      discount=3;
+    if(items.length>2){                         //si hay mas de 2 items en el carrito               
+      discount=3;                               //se aplica un descuento del 3%                  
     }
     setState(() {
-      totalPayment=(total_compra-(total_compra*(discount/100))).toInt();
+      totalPayment=(total_compra-(total_compra*(discount/100))).toInt();        //se calcula el total a pagar
     });
     getCred();
-    String formatter = DateFormat('yMd').format(now);
+    String formatter = DateFormat('yMd').format(now);                           //se obtiene la fecha actual
     print(formatter);
   }
 
-  void getCred() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
+  void getCred() async {                                                         //se obtiene el id del cliente
+    SharedPreferences pref = await SharedPreferences.getInstance();   
     setState(() {
       id= pref.getInt("login_id")!;
     });
@@ -60,7 +60,6 @@ class _CartItems extends State<CartItems> {
       children: [
         Column(children: items
             .map((item) =>
-
             Container(
           height: 110,
           margin:
@@ -150,20 +149,13 @@ class _CartItems extends State<CartItems> {
                                 if(item['quantity']>=1){
                                   item['total'] = item['product']['Price'] * item['quantity'];
                                   for(var map in items){
-
                                     total_compra=map['total']+total_compra;
                                     print("entro alhgo ${total_compra}");
                                   }
                                   totalPayment=(total_compra-(total_compra*(discount/100))).toInt();
-
                                   print("el total de compra es: ${total_compra}");
-
                                 }
-
-
-
                               });
-
                             },
                             child: Container(
                               padding: const EdgeInsets.all(8),
@@ -193,18 +185,12 @@ class _CartItems extends State<CartItems> {
                           ),
                           InkWell(
                             onTap: () {
-
                               item['quantity'] = item['quantity'] + 1;
-
                               setState(() {
                                 item['total'] = item['product']['Price'] * item['quantity'];
                                 total_compra=item['product']['Price'] +total_compra;
                                 totalPayment=(total_compra-(total_compra*(discount/100))).toInt();
-
-
-
                               });
-
                             },
                             child: Container(
                               padding: EdgeInsets.all(8),
@@ -341,7 +327,7 @@ class _CartItems extends State<CartItems> {
     );
   }
 
-  void AddInvoice() async{
+  void AddInvoice() async{                                                  //Agrega la factura a la base de datos
     String formatter = DateFormat('yMd').format(now);
 
     final getprovider = InvoiceProvider();

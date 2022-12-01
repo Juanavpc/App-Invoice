@@ -1,23 +1,23 @@
 import 'package:app_invoice/Pages/Home_Page.dart';
 import 'package:app_invoice/Widgets/details_items.dart';
 import 'package:flutter/material.dart';
-
 import '../Models/model_invoice.dart';
 import '../Providers/details_provider.dart';
 
 class Details extends StatelessWidget{
-  final ModelInvoice invoice;
-
-   Details({Key? key,required this.invoice}): super(key: key);
-  final getProvider1 = DetailsProvider();
-  ScrollController _scrollController = ScrollController();
+  final ModelInvoice invoice;                                        // Instancia de la clase ModelInvoice
+  
+  Details({Key? key,required this.invoice}): super(key: key);
+  final getProvider1 = DetailsProvider();                           // Instancia de la clase DetailsProvider
+  ScrollController _scrollController = ScrollController();          // Instancia de la clase ScrollController
 
   @override
   Widget build(BuildContext context) {
-    getProvider1.getDetails(invoice.Invoice_ID);
-    double h= MediaQuery.of(context).size.height;
-    double w=MediaQuery.of(context).size.width;
-    // TODO: implement build
+
+    getProvider1.getDetails(invoice.Invoice_ID);                    // Método que obtiene los detalles de la factura
+    double h= MediaQuery.of(context).size.height;                   // Obtiene el alto de la pantalla
+    double w=MediaQuery.of(context).size.width;                     // Obtiene el ancho de la pantalla
+
     return Scaffold(
       body: Container(
         padding: EdgeInsets.only(top: 80, left: 20, right: 20),
@@ -56,7 +56,7 @@ class Details extends StatelessWidget{
             ),
             SizedBox(height: h*0.045,),
             SingleChildScrollView(
-              controller: _scrollController,
+              controller: _scrollController,         
               child: Container(
                 height: 160,
                 width: 350,
@@ -68,7 +68,7 @@ class Details extends StatelessWidget{
                     )
                 ),
                 child: SingleChildScrollView(
-                  child: ContentStreamDetails(getProvider1),
+                  child: ContentStreamDetails(getProvider1),        // Widget que muestra los detalles de la factura
                 ),
             ),),
             SizedBox(height: h*0.05,),
@@ -80,8 +80,6 @@ class Details extends StatelessWidget{
                     fontSize: 20,
                     color: Colors.grey
                   ),
-
-
                 ),
                 SizedBox(height: 10,),
                 Text(
@@ -90,7 +88,6 @@ class Details extends StatelessWidget{
                       fontSize: 30,
                       color: Colors.black
                   ),),
-
                 SizedBox(height: h*0.14,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -103,12 +100,10 @@ class Details extends StatelessWidget{
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
                             color: Colors.deepOrangeAccent,
-
                           ),
                           child: Icon(
                             Icons.share_sharp, size: 30,color: Colors.white,
                           )
-
                       ),
                     ),
                     SizedBox(width: 80,),
@@ -120,12 +115,10 @@ class Details extends StatelessWidget{
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
                             color: Colors.deepOrangeAccent,
-
                           ),
                           child: Icon(
                             Icons.print_outlined, size: 30, color: Colors.white,
                           )
-
                       ),
                     )
                   ],
@@ -155,11 +148,9 @@ class Details extends StatelessWidget{
                 )
               ],
             )
-
           ],
         ),
       ),
-
     );
   }
 }

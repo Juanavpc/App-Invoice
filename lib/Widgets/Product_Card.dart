@@ -13,7 +13,6 @@ class ProductCard extends StatelessWidget{
   ProductCard(this.id,this.name,this.price,this.img,this.desc, this.listProductCart);
 
 
-
   @override
   Widget build(BuildContext context){
     return Column(
@@ -80,14 +79,10 @@ class ProductCard extends StatelessWidget{
                       color:Colors.red.withOpacity(0.7)
                   ),
                 ),
-
-
               ],
             ),
           ),
-
         )
-
       ],
     );
   }

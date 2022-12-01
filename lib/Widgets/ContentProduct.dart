@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../Models/model_products.dart';
 import 'Product_Card.dart';
 
-Widget ContentProducts (List<ModelProduct> data,context, listProductCart){
+Widget ContentProducts (List<ModelProduct> data,context, listProductCart){                    // Widget que muestra los productos
   return GridView.builder(
       physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
@@ -29,7 +29,7 @@ Widget ContentProducts (List<ModelProduct> data,context, listProductCart){
   );
 }
 
-Widget ContentStreamProducts(ProductProvider productprovider, listProductCart){
+Widget ContentStreamProducts(ProductProvider productprovider, listProductCart){       
   return StreamBuilder(
     stream: productprovider.productsStream,
       builder: (BuildContext context, AsyncSnapshot<List> snapshot){
